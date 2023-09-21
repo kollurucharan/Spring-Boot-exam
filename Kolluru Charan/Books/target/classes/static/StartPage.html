@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Publisher List</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+</head>
+<body>
+    <h1>Publisher List</h1>
+    <table id="publisherTable" class="display">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Number</th>
+                <th>Action</th> <!-- Column for the action button -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be populated here using jQuery -->
+        </tbody>
+    </table>
+
+    <script>
+        $(document).ready(function() {
+           
+            function loadPublishers() {
+                $.get("/publisher", function(data) {
+                    var table = $("#publisherTable").DataTable({
+                        data: data,
+                        columns: [
+                            { data: "publisher_name" },
+                            { data: "address" },
+                            { data: "phone_number" },
+                            {
+                                data: null,
+                                render: function(data, type, row) {
+                                    return '<button class="view-details">View Details</button>';
+                                }
+                            }
+                        ]
+                    });
+
+                    // Add a click event listener to handle button clicks
+                    $('#publisherTable tbody').on('click', '.view-details', function () {
+                        var rowData = table.row($(this).parents('tr')).data();
+                        redirectToPage(rowData.publisher_name);
+                    });
+                });
+            }
+
+            loadPublishers();
+
+            // Define the redirectToPage function
+            function redirectToPage(publisherName) {
+                console.log(publisherName);
+                window.location.href = "AllBooks.html";
+            }
+        });
+    </script>
+</body>
+</html>

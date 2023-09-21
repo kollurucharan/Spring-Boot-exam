@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TableSorter Example</title>
+     <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+    <!-- jQuery Form Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #myTable {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #myTable th,
+        #myTable td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        #myTable th {
+            background-color: #0074D9;
+            color: #fff;
+        }
+
+        #myTable tbody tr:nth-child(odd) {
+            background-color: #f2f2f2;
+        }
+
+        #myTable tbody tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+
+<div>
+    <h1>Sortable Table</h1>
+
+    <table id="myTable" class="tablesorter">
+        <thead>
+            <tr>
+                <th> Id</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th> Publication Year </th>
+                <th>ISBN No</th>
+                <th>Section</th>
+                
+                <!-- Add more table headers as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Table data will be populated here using jQuery -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function() {
+        // Fetch data from your API (replace with your API endpoint)
+        $.ajax({
+            url: '/books',
+            method: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                // Clear existing table data (if any)
+                $('#myTable tbody').empty();
+                $('#myTable').DataTable({
+                    data: response,
+                   
+                    columns: [
+                        {data: 'bookId'},
+                        {data: 'title'},
+                        {data: 'author'},
+                        {data: 'publicationYear'},
+                        {data: 'isbn'},
+                        {data: 'genre'},
+                       
+                    ]
+                });
+            },
+            error: function(error) {
+                console.log('Error:', error);
+            }
+        });
+    });
+</script>
+</body>
+</html>
